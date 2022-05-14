@@ -2,11 +2,11 @@ require "drawille"
 require "colorize"
 require "game"
 
-class Creator
+class GameCreator
   attr_reader :flipbook, :life, :speed
 
   def initialize(options)
-    width, height, @speed = options.values
+    width, height, @speed = validations(options)
 
     @flipbook = Drawille::FlipBook.new
     @life = Game::Life.new(width, height)
@@ -23,19 +23,22 @@ class Creator
   private
 
   def draw
-    canvas = to_canvas
+    canvas = life.draw(Drawille::Canvas.new)
     life.cycle
     sleep(speed/1000.0)
     canvas
   end
 
-  def to_canvas
-    life.draw(Drawille::Canvas.new)
-  end
-
   def thanks_for_playing
     puts "\nThanks for playing!!!".colorize(:yellow)
     puts "Life lasted for #{life.generations} generations.\n\n".colorize(:light_yellow)
+  end
+
+  def validations(options)
+    options.map do |key, value|
+      raise ArgumentError.new("#{key.capitalize} must be grater than zero.") if value <= 0
+      value
+    end
   end
 
 end

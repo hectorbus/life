@@ -11,7 +11,7 @@
 
 $LOAD_PATH << 'lib'
 
-require "creator"
+require "game_creator"
 require 'thor'
 
 class LifeGame < Thor
@@ -25,7 +25,7 @@ class LifeGame < Thor
   option :speed,  aliases: '--s', type: :numeric, default: 100, desc: 'Life cycle speed in milliseconds'
   desc "start", "Starts Conway's game of life."
   def start
-    game = Creator.new(options)
+    game = GameCreator.new(options)
     game.start
   end
 

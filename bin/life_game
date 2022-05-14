@@ -9,12 +9,12 @@
 
 # https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
-$:.unshift(File.expand_path(File.join("..", "lib"), __dir__))
+$LOAD_PATH << 'lib'
 
-require "life"
+require "creator"
 require 'thor'
 
-class GameOfLife < Thor
+class LifeGame < Thor
 
   def initialize(*args)
     super
@@ -25,9 +25,10 @@ class GameOfLife < Thor
   option :speed,  aliases: '--s', type: :numeric, default: 100, desc: 'Life cycle speed in milliseconds'
   desc "start", "Starts Conway's game of life."
   def start
-    Life.new(options).start
+    game = Creator.new(options)
+    game.start
   end
 
 end
 
-GameOfLife.start(ARGV)
+LifeGame.start(ARGV)

@@ -2,6 +2,8 @@
 
 **Ruby CLI implementation of Conway's Game of Life**
 
+![CLI example](example.gif)
+
 Installation
 -----
 

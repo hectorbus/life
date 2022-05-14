@@ -20,9 +20,9 @@ class GameOfLife < Thor
     super
   end
 
-  option :width,  aliases: '--x', type: :numeric, default: 3, desc: 'Grid width size'
-  option :height, aliases: '--y', type: :numeric, default: 3, desc: 'Grid height size'
-  option :speed,  aliases: '--s', type: :numeric, default: 1000, desc: 'Life cycle speed in milliseconds'
+  option :width,  aliases: '--x', type: :numeric, default: 30, desc: 'Grid width size'
+  option :height, aliases: '--y', type: :numeric, default: 30, desc: 'Grid height size'
+  option :speed,  aliases: '--s', type: :numeric, default: 100, desc: 'Life cycle speed in milliseconds'
   desc "start", "Starts Conway's game of life."
   def start
     Life.new(options).start

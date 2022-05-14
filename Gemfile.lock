@@ -1,12 +1,18 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    colorize (0.8.1)
+    curses (1.4.4)
+    drawille (0.3.3)
+      curses
     thor (1.2.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  colorize
+  drawille (~> 0.3.3)
   thor (~> 1.2.1)
 
 BUNDLED WITH

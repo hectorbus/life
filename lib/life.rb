@@ -1,8 +1,10 @@
+require "drawille"
+require 'colorize'
 require_relative 'god'
 require_relative 'grid'
 
 class Life
-  attr_reader :grid, :cycle_count, :speed
+  attr_reader :grid, :generation_count, :speed
 
   def initialize(options)
     @width = options['width']
@@ -10,30 +12,51 @@ class Life
     @speed = options['speed']
 
     @grid = Grid.new(@width, @height)
-    @cycle_count = 1
+    @generation_count = 1
   end
 
   def start
-    loop do
-      total_cells_alive = grid.living_cells.count
-      total_cells_dead = grid.dead_cells.count
+    flipbook = Drawille::FlipBook.new
 
-      # TODO: Create UI to visualy display life cycle and replace text prints.
-      p "Cycle count: #{cycle_count}"
-      p "Total Cells alive: #{total_cells_alive}"
-      p "Total Cells dead: #{total_cells_dead}"
-      p "----------------------------------------"
+    flipbook.play do
+      if grid.living_cells.count > 0
+        canvas = to_canvas
+        next_generation
 
-      break if total_cells_alive == 0
+        sleep(speed/1000.0)
 
-      life_cycle = God.life_cycle(grid)
-      @cycle_count += 1
-
-      God.kill(life_cycle[:to_kill])
-      God.give_birth(life_cycle[:to_give_birth])
-
-      sleep speed/1000
+        canvas
+      end
     end
+
+    puts "\nThanks for playing!!!".colorize(:yellow)
+    puts "Life lasted for #{generation_count} generations.\n\n".colorize(:light_yellow)
+  end
+
+  private
+
+  def to_canvas
+    canvas = Drawille::Canvas.new
+
+    grid.living_cells.each do |cell|
+      x, y = cell.position
+      canvas.set(x, y)
+    end
+
+    grid.dead_cells.each do |cell|
+      x, y = cell.position
+      canvas.unset(x, y)
+    end
+
+    canvas
+  end
+
+  def next_generation
+    life_cycle = God.life_cycle(@grid)
+    @generation_count += 1
+
+    God.kill(life_cycle[:to_kill])
+    God.give_birth(life_cycle[:to_give_birth])
   end
 
 end
